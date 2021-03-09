@@ -52,7 +52,7 @@ def get_java_usage(server: ServerInterface):
         proc = get_java_proc(server)
         java_cpu = proc.cpu_percent(1)
         java_mem_percent = round(proc.memory_info().rss / psutil.virtual_memory().total * 100, 2)
-        return f'服务端 CPU 占用: §b{java_cpu}%§r \n服务端内存占用: §b{java_mem_percent}%'
+        return f'服务占用: CPU§b{java_cpu}%§r 内存§b{java_mem_percent}%'
     except Exception as e:
         return get_error_rtext('服务端占用', e)
 
