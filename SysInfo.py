@@ -1,11 +1,13 @@
 import platform
 import psutil
+import os
 from mcdreforged.api.all import *
+
 
 def get_java_proc(server: ServerInterface):
     children = psutil.Process(server.get_server_pid()).children()
     for i in children:
-        if i.name.startswith('java'):
+        if i.name().startswith('java'):
             return i
 
 def convert_mb(text):
@@ -34,7 +36,11 @@ def get_cpu_usage():
 
 def get_disk_usage():
     try:
-        disk = psutil.disk_usage('/')
+        
+        if platform.system() == 'Windows':
+            disk = psutil.disk_usage(os.path.abspath('.')[:3])
+        else:
+            disk = psutil.disk_usage('/')
         disk_free = convert_mb(disk.free)
         disk_total = convert_mb(disk.total)
         return RTextList('磁盘占用: ', RText(f'§b{disk.percent}%§r').set_hover_text(f'§b{disk_free}MB§r/§b{disk_total}MB§r'))
@@ -68,7 +74,7 @@ def send_message(source: CommandSource):
         get_memory(), # 内存占用
         get_disk_usage(), # 磁盘占用
         get_java_usage(source.get_server()), # 服务端占用
-        '='*30
+        '='*28
     ]
     for i in info_list:
         print_message(source, i)
