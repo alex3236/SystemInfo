@@ -56,8 +56,8 @@ def get_system():
 
 def print_message(source:CommandSource, msg):
     msg = '[SYS] ' + msg
-    # source.reply(msg)
-    print(msg)
+    source.reply(msg)
+    # print(msg)
 
 def send_message(source: CommandSource):
     print_message(source, '§a请稍后，正在获取中...')
