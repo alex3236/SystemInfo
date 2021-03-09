@@ -21,7 +21,7 @@ def get_memory():
         mem = psutil.virtual_memory()
         mem_used = convert_mb(mem.used)
         mem_total = convert_mb(mem.total)
-        return RTextList('内存占用: ', RText(f'§b{mem.percent}%§r').set_hover_text(f'§b{mem_used}MB§r/§b{mem_used}MB§r'))
+        return RTextList('内存占用: ', RText(f'§e{mem.percent}%§r').set_hover_text(f'§b{mem_used}MB§r/§b{mem_used}MB§r'))
     except Exception as e:
         return get_error_rtext('内存占用', e)
 
@@ -43,7 +43,7 @@ def get_disk_usage():
             disk = psutil.disk_usage('/')
         disk_free = convert_mb(disk.free)
         disk_total = convert_mb(disk.total)
-        return RTextList('磁盘占用: ', RText(f'§b{disk.percent}%§r').set_hover_text(f'§b{disk_free}MB§r/§b{disk_total}MB§r'))
+        return RTextList('磁盘占用: ', RText(f'§e{disk.percent}%§r').set_hover_text(f'§b{disk_free}MB§r/§b{disk_total}MB§r'))
     except Exception as e:
         return get_error_rtext('磁盘占用', e)
 
@@ -52,7 +52,7 @@ def get_java_usage(server: ServerInterface):
         proc = get_java_proc(server)
         java_cpu = proc.cpu_percent(1)
         java_mem_percent = round(proc.memory_info().rss / psutil.virtual_memory().total * 100, 2)
-        return f'服务端 CPU 占用: §b{java_cpu}%§r 服务端内存占用: §b{java_mem_percent}%'
+        return f'服务端 CPU 占用: §b{java_cpu}%§r \n服务端内存占用: §b{java_mem_percent}%'
     except Exception as e:
         return get_error_rtext('服务端占用', e)
 
