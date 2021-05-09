@@ -3,6 +3,28 @@ import psutil
 import os
 from mcdreforged.api.all import *
 
+def send_message(source: CommandSource):
+    print_message(source, '§a请稍后，正在获取中...')
+    info_list = [
+        f"{'='*10}服务器信息{'='*10}",
+        get_system(), # 系统类型
+        get_cpu_usage(), # CPU占用
+        get_memory(), # 内存占用
+        get_disk_usage(), # 磁盘占用
+        get_java_usage(source.get_server()), # 服务端占用
+        '='*28
+    ]
+    for i in info_list:
+        print_message(source, i)
+
+PLUGIN_METADATA = {
+    'id': 'system_info',
+    'version': '2.0.0',
+    'name': 'SystemInfo',
+    'description': '一个为 MCDR 设计的 MOTD 插件。获取系统信息。',
+    'author': 'Alex3236',
+    'link': 'https://github.com/eagle3236/SystemInfo'
+}
 
 def get_java_proc(server: ServerInterface):
     children = psutil.Process(server.get_server_pid()).children()
@@ -64,20 +86,6 @@ def print_message(source:CommandSource, msg):
     msg = '[SYS] ' + msg
     source.reply(msg)
     # print(msg)
-
-def send_message(source: CommandSource):
-    print_message(source, '§a请稍后，正在获取中...')
-    info_list = [
-        f"{'='*10}服务器信息{'='*10}",
-        get_system(), # 系统类型
-        get_cpu_usage(), # CPU占用
-        get_memory(), # 内存占用
-        get_disk_usage(), # 磁盘占用
-        get_java_usage(source.get_server()), # 服务端占用
-        '='*28
-    ]
-    for i in info_list:
-        print_message(source, i)
 
 def on_load(server: ServerInterface, old_module):
     server.register_command(Literal('!!sys').runs(send_message))
